@@ -7,7 +7,7 @@ pipeline {
                 input('Do you want to proceed?')
             }
         }
-    stage('Wait for user to input text?') {
+    stage('Wait for user to select choice parameter?') {
     steps {
         script {
              def userInput = input(id: 'userInput', message: 'Merge to?',
@@ -20,6 +20,17 @@ pipeline {
     }
 
 }
+    stage('wait for user to text input'){
+      steps{
+        script{
+         def userInput =  input(id: 'userInput', message: 'Let\'s promote?, parameters: [$class: 'TextParameterDefinition', defaultValue: 'uat', description: 'Environment', name: 'env'],
+ [$class: 'TextParameterDefinition', defaultValue: 'uat1', description: 'Target', name: 'target']
+])
+          echo ("Env: "+userInput['env'])
+echo ("Target: "+userInput['target'])
+        }
+      }
+    }
     stage('clean workspace') {
       steps {
         cleanWs(cleanWhenFailure: true, cleanWhenNotBuilt: true, cleanWhenAborted: true, cleanWhenUnstable: true, deleteDirs: true, notFailBuild: true, skipWhenFailed: true)
